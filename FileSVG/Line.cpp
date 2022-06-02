@@ -7,6 +7,25 @@ Line::Line(double x1, double y1, double x2, double y2, double width, char* color
 	setPoint(1, x2, y2);
 	this->stroke_width = width;
 }
+double Line::getX1() const {
+	return getPointAtIndex(0).x;
+}
+double Line::getY1() const {
+	return getPointAtIndex(0).y;
+}
+double Line::getX2() const {
+	return getPointAtIndex(1).x;
+}
+double Line::getY2() const {
+	return getPointAtIndex(1).y;
+}
+double Line::getRadius() const {
+	return 0;
+}
+double Line::getStroke() const {
+	return stroke_width;
+}
+
 double Line::getArea() const {
 	return 0;
 }
@@ -47,4 +66,10 @@ bool Line::CheckIfPointIsInCircle(double Centre_X, double Centre_Y, double Circl
 	Shape::point p2(getPointAtIndex(1).x, getPointAtIndex(1).y);
 
 	return p1.getDistance(getPointAtIndex(0)) <= Circle_R && p2.getDistance(getPointAtIndex(0)) <= Circle_R;
+}
+
+void Line::CheckShape(char* arr) {
+	strcpy(arr, "line");
+	arr[strlen("line") + 1] = '\0';
+	
 }

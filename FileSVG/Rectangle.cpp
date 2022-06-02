@@ -66,6 +66,29 @@ double Rectangle::getHeight() const{
 double Rectangle::getWidth() const{
 	return width;
 }
+double Rectangle::getX1() const {
+	return getPointAtIndex(0).x;
+}
+double Rectangle::getY1() const {
+	return getPointAtIndex(0).y;
+}
+double Rectangle::getX2() const {
+	return width;
+}
+double Rectangle::getY2() const {
+	return height;
+}
+double Rectangle::getRadius() const {
+	return 0;
+}
+double Rectangle::getStroke() const {
+	return 0;
+}
+
+void Rectangle::CheckShape(char* arr) {
+	strcpy(arr, "rectangle");
+	arr[strlen("rectangle") + 1] = '\0';
+}
 
 void Rectangle::PrintShapeInfo() {
 	std::cout << "Rectangle x="<<getPointAtIndex(0).x<<" y="<< getPointAtIndex(0).y <<" width="<<width<<" height="<<height<<" "<<getColor();

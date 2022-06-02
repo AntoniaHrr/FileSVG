@@ -43,3 +43,27 @@ bool Circle::CheckIfPointIsInCircle(double xC, double yC, double rC) {
 		return radius + distance <= rC;
 
 }
+
+void Circle::CheckShape(char* arr) {
+	strcpy(arr, "circle");
+	arr[strlen("circle") + 1] = '\0';
+}
+
+double Circle::getX1() const {
+	return getPointAtIndex(0).x;
+}
+double Circle::getY1() const {
+	return getPointAtIndex(0).y;
+}
+double Circle::getX2() const {
+	return 0;
+}
+double Circle::getY2() const {
+	return 0;
+}
+double Circle::getRadius() const {
+	return radius;
+}
+double Circle::getStroke() const {
+	return 0;
+}

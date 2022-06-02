@@ -7,8 +7,6 @@ using namespace std;
 
 Shape::Shape() {
 	this->color = nullptr;
-	/*this->x = 0;
-	this->y = 0;*/
 	this->pointsCount = 0;
 	this->points = nullptr;
 }
@@ -50,6 +48,10 @@ Shape& Shape::operator= (const Shape& other) {
 }
 Shape::~Shape() {
 	free();
+}
+char* Shape::convertNumbertoArray(char* arr, double number) {
+	*(double*)arr = number;
+	return arr;
 }
 
 Shape::point& Shape::getPointAtIndex(size_t index) const {

@@ -7,13 +7,69 @@
 #pragma warning (disable: 4996)
 
 void CreateShape::Save() {
-	std::ofstream outfile("Figures.txt", std::ios::app);
+	char* FirstThreeRows = new char[4069];
+	int count = 0;
+	std::ifstream myfile;
+	myfile.open("Figures.txt", std::ios::in);
+
+	if (!myfile.is_open()) {
+		std::cout << "Cant open file";
+		return;
+	}
+	for (int i = 0; i < 3; i++) {
+		char* line;
+		line = new char[1000];
+		myfile.getline(line, 1000);
+		for (int j = 0; line[j] != '\0'; j++) {
+			FirstThreeRows[count] = line[j];
+			count++;
+		}
+		FirstThreeRows[count] = '\n';
+		count++;
+	}
+	FirstThreeRows[count] = '\0';
+	myfile.close();
+
+	std::ofstream outfile("Figures.txt", std::ios::out);
 	if (!outfile.is_open())
 	{
 		std::cout << "File could not be opened" << std::endl;
 		return;
 	}
-	outfile << "The number " << "is not present in the array." << std::endl;
+	outfile << FirstThreeRows;
+	outfile << "<svg>" << std::endl;
+
+	for (int i = 0; i < shapesCount; i++) {
+		char* shape = new char[1000];
+		shapes[i]->CheckShape(shape);
+		if (strcmp(shape, "line")==0) {
+			outfile << "<line x1=" << "\"" << shapes[i]->getX1()
+				<< "\" x2=" << "\"" << shapes[i]->getX2()
+				<< "\" y1=" << "\"" << shapes[i]->getY1()
+				<< "\" y2=" << "\"" << shapes[i]->getY2()
+				<< "\" stroke=" << "\"" << shapes[i]->getColor()
+				<< "\" stroke - width =" << "\"" << shapes[i]->getStroke()
+				<< "\"/>" << std::endl;
+		}
+		else if (strcmp(shape, "circle") == 0) {
+			outfile << "<circle cx=" << "\"" << shapes[i]->getX1()
+				<< "\" cy=" << "\"" << shapes[i]->getY2()
+				<< "\" r=" << "\"" << shapes[i]->getRadius()
+				<< "\" stroke=" << "\"" << shapes[i]->getColor()
+				<< "\"/>" << std::endl;
+		}
+		else if (strcmp(shape, "rectangle") == 0) {
+			outfile << "<rect x=" << "\"" << shapes[i]->getX1()
+				<< "\" y=" << "\"" << shapes[i]->getY1()
+				<< "\" width=" << "\"" << shapes[i]->getX2()
+				<< "\" height=" << "\"" << shapes[i]->getY2()
+				<< "\" stroke=" << "\"" << shapes[i]->getColor()
+				<< "\"/>" << std::endl;
+		}
+		delete[] shape;
+	}
+
+	outfile << "<svg>" << std::endl;
 	outfile.close();
 
 }
@@ -30,7 +86,7 @@ void CreateShape::Read() {
 	    char* line;
 		line = new char[1000];
 		myfile.getline(line, 1000);
-		if (line[2] == 'r') {
+		if (line[1] == 'r') {
 			double x = 0;
 			double y = 0;
 			int i = 0;
@@ -38,7 +94,7 @@ void CreateShape::Read() {
 			int ten = 10;
 			double width = 0;
 			double height = 0;
-			for (i = 10; line[i] != '"'; i++) {
+			for (i = 9; line[i] != '"'; i++) {
 				x = ten * x + (line[i] - '0');
 			}
 			for (l = i + 5; line[l] != '"'; l++) {
@@ -53,7 +109,7 @@ void CreateShape::Read() {
 			char* color;
 			color = new char[100];
 			int n = 0;
-			for (i = l + 8; line[i] != '"'; i++) {
+			for (i = l + 10; line[i] != '"'; i++) {
 				color[n] = line[i];
 				n++;
 			}
@@ -61,14 +117,14 @@ void CreateShape::Read() {
 			addRectangle(x, y, width, height, color);
 			delete[] color;
 		}
-		else if (line[2] == 'c') {
+		else if (line[1] == 'c') {
 			double x = 0;
 			double y = 0;
 			double radius=0;
 			int i = 0;
 			int l = 0;
 			int ten = 10;
-			for (i = 13; line[i] != '"'; i++) {
+			for (i = 12; line[i] != '"'; i++) {
 				x = ten *x+ (line[i] - '0');
 			}
 			for (l = i + 6; line[l] != '"'; l++) {
@@ -80,7 +136,7 @@ void CreateShape::Read() {
 			char* color;
 			color = new char[100];
 			int n = 0;
-			for (l = i + 8; line[l] != '"'; l++) {
+			for (l = i + 10; line[l] != '"'; l++) {
 				color[n] = line[l];
 				n++;
 			}
@@ -88,7 +144,7 @@ void CreateShape::Read() {
 			addCircle(x, y, radius, color);
 			delete[] color;
 		}
-		else if (line[2] == 'l') {
+		else if (line[1] == 'l') {
 			double x = 0;
 			double y = 0;
 			double x2 = 0;
@@ -96,29 +152,28 @@ void CreateShape::Read() {
 			double stroke_width = 0;
 			int i = 0;
 			int l = 0;
-			int ten = 1;
-			for (i = 12; line[i] != '"'; i++) {
+			int ten = 10;
+			for (i = 10; line[i] != '"'; i++) {
 				x = ten * x + (line[i] - '0');
 			}
 			for (l = i + 6; line[l] != '"'; l++) {
-				y = ten * y + (line[l] - '0');
+				x2 = x2 * ten + (line[l] - '0');
 			}
 			for (i = l + 6; line[i] != '"'; i++) {
-				x2=x2*ten + (line[i] - '0');
+				y = y*ten + (line[i] - '0');
 			}
-			ten = 1;
-			for (i = l + 6; line[i] != '"'; i++) {
-				y2=y2* ten + (line[i] - '0');
+			for (l = i + 6; line[l] != '"'; l++) {
+				y2 = y2 * ten + (line[l] - '0');
 			}
 			char* color = new char[100];
 			int n = 0;
-			for (l = i + 10; line[l] != '"'; l++) {
-				color[n] = line[l];
+			for (i = l + 10; line[i] != '"'; i++) {
+				color[n] = line[i];
 				n++;
 			}
 			color[n] = '\0';
-			for (i = l + 16; line[i] != '"'; i++) {
-				stroke_width = stroke_width * ten + (line[i] + '0');
+			for (l = i + 19; line[l] != '"'; l++) {
+				stroke_width = stroke_width * ten + (line[l] - '0');
 			}
 			addLine(x,y,x2,y2,stroke_width,color);
 			delete[] color;

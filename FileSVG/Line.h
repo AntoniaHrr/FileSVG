@@ -8,6 +8,14 @@ private:
 public:
 	Line(double x, double y, double x1, double y1, double stroke_width, char* color);
 
+	double getX1() const override;
+	double getY1() const override;
+	double getX2() const override;
+	double getY2() const override;
+	double getRadius() const override;
+	double getStroke() const override;
+
+	void CheckShape(char*) override;
     double getArea() const override;
 	double getPerimeter() const override;
 	void PrintShapeInfo() override;

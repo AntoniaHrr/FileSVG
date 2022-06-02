@@ -24,6 +24,7 @@ int main()
 			cout << "Pers" << endl; 
 			cout << "Save" << endl;
 		}
+
 		else if (strcmp(input, "Save") == 0) {
 			s.Save();
 		}

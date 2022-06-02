@@ -37,7 +37,17 @@ public:
 
 	void setPoint(size_t pointIndex, double x, double y);
 	void Translate(double, double);
+	char* convertNumbertoArray(char*, double);
 
+
+	virtual double getX1() const =0;
+	virtual double getY1() const = 0;
+	virtual double getX2() const = 0;
+	virtual double getY2() const = 0;
+	virtual double getRadius() const = 0;
+	virtual double getStroke() const = 0;
+
+	virtual void CheckShape(char*) = 0;
 	virtual double getArea() const = 0;
 	virtual double getPerimeter()  const = 0;
 	virtual void PrintShapeInfo() = 0;
